@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy Simplifier</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #FFC107;
+            --background-color: #121212;
+            --surface-color: #1E1E1E;
+            --text-color: #FFFFFF;
+            --text-secondary-color: #B0B0B0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .input-section, .output-section {
+            background-color: var(--surface-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            border-radius: 4px;
+            border: none;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-size: 16px;
+            resize: vertical;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .summary {
+            background-color: var(--background-color);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .summary h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .summary p {
+            color: var(--text-secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .key-points {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+
+        .key-points li {
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .key-points li::before {
+            content: "•";
+            color: var(--secondary-color);
+            font-weight: bold;
+            position: absolute;
+            left: -15px;
+        }
+
+        .loading {
+            text-align: center;
+            color: var(--text-secondary-color);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Policy Simplifier</h1>
+            <p>AI-powered tool to translate complex government policies into easy-to-read summaries</p>
+        </header>
+
+        <section class="input-section">
+            <textarea id="policyInput" placeholder="Paste your policy text here..."></textarea>
+            <button onclick="simplifyPolicy()">Simplify Policy</button>
+        </section>
+
+        <section class="output-section" id="output">
+            <!-- Simplified policy output will be displayed here -->
+        </section>
+    </div>
+
+    <script>
+        function simplifyPolicy() {
+            const policyText = document.getElementById('policyInput').value;
+            const outputSection = document.getElementById('output');
+            
+            // Show loading message
+            outputSection.innerHTML = '<p class="loading">Analyzing and simplifying policy...</p>';
+
+            // Simulate API call delay
+            setTimeout(() => {
+                // In a real application, this would be an API call to an AI service
+                const simplifiedPolicy = simulateAISimplification(policyText);
+                displaySimplifiedPolicy(simplifiedPolicy);
+            }, 2000);
+        }
+
+        function simulateAISimplification(policyText) {
+            // This is a mock function. In a real application, this would be replaced with actual AI processing.
+            const summary = "This policy aims to improve public transportation in urban areas.";
+            const keyPoints = [
+                "Increase funding for bus and rail systems",
+                "Implement new technologies for real-time tracking",
+                "Reduce fares for low-income residents",
+                "Expand bike-sharing programs"
+            ];
+            const implications = "This policy could lead to reduced traffic congestion and improved air quality in cities.";
+
+            return { summary, keyPoints, implications };
+        }
+
+        function displaySimplifiedPolicy(simplifiedPolicy) {
+            const outputSection = document.getElementById('output');
+            outputSection.innerHTML = `
+                <div class="summary">
+                    <h3>Summary</h3>
+                    <p>${simplifiedPolicy.summary}</p>
+                    <h3>Key Points</h3>
+                    <ul class="key-points">
+                        ${simplifiedPolicy.keyPoints.map(point => `<li>${point}</li>`).join('')}
+                    </ul>
+                    <h3>Potential Implications</h3>
+                    <p>${simplifiedPolicy.implications}</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
