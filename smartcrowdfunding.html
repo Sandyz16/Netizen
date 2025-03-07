@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCrowdFunding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #FFC107;
+            --background-color: #121212;
+            --surface-color: #1E1E1E;
+            --text-color: #FFFFFF;
+            --text-secondary-color: #B0B0B0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .project-list, .contribution-section {
+            background-color: var(--surface-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .project-item {
+            background-color: var(--background-color);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .project-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .project-item p {
+            color: var(--text-secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            background-color: var(--surface-color);
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress {
+            background-color: var(--primary-color);
+            height: 100%;
+            width: 0;
+            transition: width 0.5s ease-in-out;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: none;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .blockchain-info {
+            font-size: 0.8em;
+            color: var(--secondary-color);
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SmartCrowdFunding</h1>
+            <p>Blockchain-based donation system for public infrastructure repairs</p>
+        </header>
+
+        <section class="project-list" id="projectList">
+            <!-- Projects will be displayed here -->
+        </section>
+
+        <section class="contribution-section">
+            <h2>Make a Contribution</h2>
+            <select id="projectSelect">
+                <option value="">Select a project</option>
+            </select>
+            <input type="number" id="contributionAmount" placeholder="Amount to contribute (ETH)">
+            <button onclick="makeContribution()">Contribute</button>
+        </section>
+    </div>
+
+    <script>
+        const projects = [
+            { id: 1, name: "Bridge Repair", description: "Repair the Main Street Bridge", goal: 100, current: 25 },
+            { id: 2, name: "Road Resurfacing", description: "Resurface Oak Avenue", goal: 50, current: 10 },
+            { id: 3, name: "Park Renovation", description: "Renovate Central Park facilities", goal: 75, current: 40 }
+        ];
+
+        function displayProjects() {
+            const projectList = document.getElementById('projectList');
+            const projectSelect = document.getElementById('projectSelect');
+            
+            projectList.innerHTML = '';
+            projects.forEach(project => {
+                const projectElement = document.createElement('div');
+                projectElement.className = 'project-item';
+                const progress = (project.current / project.goal) * 100;
+                projectElement.innerHTML = `
+                    <h3>${project.name}</h3>
+                    <p>${project.description}</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: ${progress}%"></div>
+                    </div>
+                    <p>Progress: ${project.current} ETH / ${project.goal} ETH</p>
+                    <div class="blockchain-info">
+                        Smart Contract Address: 0x123...abc
+                    </div>
+                `;
+                projectList.appendChild(projectElement);
+
+                const option = document.createElement('option');
+                option.value = project.id;
+                option.textContent = project.name;
+                projectSelect.appendChild(option);
+            });
+        }
+
+        function makeContribution() {
+            const projectId = document.getElementById('projectSelect').value;
+            const amount = parseFloat(document.getElementById('contributionAmount').value);
+
+            if (!projectId || isNaN(amount) || amount <= 0) {
+                alert('Please select a project and enter a valid amount.');
+                return;
+            }
+
+            const project = projects.find(p => p.id == projectId);
+            if (project) {
+                project.current += amount;
+                displayProjects();
+                alert(`Thank you for your contribution of ${amount} ETH to ${project.name}!`);
+                document.getElementById('contributionAmount').value = '';
+            }
+
+            // In a real application, this is where you would interact with the blockchain
+            console.log(`Contributing ${amount} ETH to project ${projectId}`);
+            // Simulated blockchain transaction
+            setTimeout(() => {
+                console.log('Transaction confirmed on the blockchain');
+            }, 2000);
+        }
+
+        // Initialize the page
+        displayProjects();
+    </script>
+</body>
+</html>
