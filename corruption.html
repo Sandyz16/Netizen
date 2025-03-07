@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corruption Watch - Anonymous Whistleblower System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e88e5;
+            --secondary-color: #ff4081;
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-color: #ffffff;
+            --text-secondary-color: #b0b0b0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--surface-color);
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            animation: fadeInDown 0.5s ease-out;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: flex-start;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        main {
+            padding: 40px 0;
+        }
+
+        .report-form {
+            background-color: var(--surface-color);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--text-secondary-color);
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        textarea {
+            height: 150px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1565c0;
+        }
+
+        .report-list {
+            margin-top: 40px;
+        }
+
+        .report-item {
+            background-color: var(--surface-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .report-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .report-item h3 {
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .report-item p {
+            margin-bottom: 10px;
+            color: var(--text-secondary-color);
+        }
+
+        .report-item .status {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: var(--surface-color);
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            color: var(--text-secondary-color);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: var(--text-color);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .encryption-notice {
+            background-color: var(--surface-color);
+            border-left: 4px solid var(--secondary-color);
+            padding: 10px;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: var(--text-secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-eye-slash"></i> Corruption Watch</h1>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#report">Report Corruption</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="report" class="report-form">
+            <h2>Report Corruption Anonymously</h2>
+            <div class="encryption-notice">
+                <i class="fas fa-lock"></i> All reports are encrypted and anonymized to protect your identity.
+            </div>
+            <form id="corruptionForm">
+                <div class="form-group">
+                    <label for="corruptionType">Type of Corruption:</label>
+                    <select id="corruptionType" required>
+                        <option value="">Select type of corruption</option>
+                        <option value="bribery">Bribery</option>
+                        <option value="embezzlement">Embezzlement</option>
+                        <option value="fraud">Fraud</option>
+                        <option value="nepotism">Nepotism</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="organization">Organization/Department:</label>
+                    <input type="text" id="organization" required placeholder="Name of the organization or department involved">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description of Incident:</label>
+                    <textarea id="description" required placeholder="Provide details about the corrupt activity. Include dates, names, and any evidence if possible."></textarea>
+                </div>
+                <button type="submit">Submit Report</button>
+            </form>
+        </section>
+
+        <section class="report-list">
+            <h2>Recent Anonymous Reports</h2>
+            <div id="reportList"></div>
+        </section>
+    </main>
+
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Report Submitted</h2>
+            <p>Thank you for your courage. Your report has been securely submitted and will be investigated by our team.</p>
+            <p>Your report ID: <strong id="reportId"></strong></p>
+            <p>Please save this ID for future reference.</p>
+        </div>
+    </div>
+
+    <script>
+        const corruptionForm = document.getElementById('corruptionForm');
+        const reportList = document.getElementById('reportList');
+        const modal = document.getElementById('confirmationModal');
+        const closeBtn = document.getElementsByClassName('close')[0];
+        const reportIdElement = document.getElementById('reportId');
+
+        corruptionForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const corruptionType = document.getElementById('corruptionType').value;
+            const organization = document.getElementById('organization').value;
+            const description = document.getElementById('description').value;
+
+            const reportId = generateReportId();
+            
+            const reportItem = document.createElement('div');
+            reportItem.className = 'report-item';
+            reportItem.innerHTML = `
+                <h3>${corruptionType.charAt(0).toUpperCase() + corruptionType.slice(1)}</h3>
+                <p><strong>Organization:</strong> ${organization}</p>
+                <p><strong>Description:</strong> ${description.substring(0, 100)}...</p>
+                <p class="status">Status: Under Review</p>
+            `;
+
+            reportList.insertBefore(reportItem, reportList.firstChild);
+            corruptionForm.reset();
+
+            reportIdElement.textContent = reportId;
+            modal.style.display = 'block';
+        });
+
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function generateReportId() {
+            return 'CW-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+        }
+    </script>
+</body>
+</html>
