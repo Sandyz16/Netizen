@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Nutritional Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #FFC107;
+            --background-color: #121212;
+            --surface-color: #1E1E1E;
+            --text-color: #FFFFFF;
+            --text-secondary-color: #B0B0B0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+        }
+
+        header p {
+            color: var(--text-secondary-color);
+        }
+
+        .search-section {
+            background-color: var(--surface-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .search-section label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .search-section select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: none;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .results-section {
+            background-color: var(--surface-color);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .food-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #333;
+        }
+
+        .food-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .food-item p {
+            color: var(--text-secondary-color);
+        }
+
+        .food-item span {
+            font-style: italic;
+            color: #888;
+        }
+
+        button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 4px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #689F38;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Nutritional Guide</h1>
+            <p>Find affordable, nutritious food alternatives tailored to your needs.</p>
+        </header>
+
+        <section class="search-section">
+            <label for="nutrient">Select a Nutrient or Food Type:</label>
+            <select id="nutrient">
+                <option value="">-- Select an Option --</option>
+                <option value="vitaminA">Vitamin A</option>
+                <option value="fiber">Fiber</option>
+                <option value="protein">Protein</option>
+                <option value="iron">Iron</option>
+                <option value="vitaminC">Vitamin C</option>
+                <option value="potassium">Potassium</option>
+                <option value="lowCost">Low-Cost Foods</option>
+                <option value="plantBased">Plant-Based Options</option>
+                <option value="wholeGrains">Whole Grains</option>
+                <option value="antioxidants">Antioxidants</option>
+                <option value="omega3">Omega-3 Fatty Acids</option>
+            </select>
+
+            <button onclick="findFoods()">Find Foods</button>
+        </section>
+
+        <section class="results-section" id="results">
+            <!-- Food suggestions will appear here -->
+        </section>
+    </div>
+
+    <script>
+        const foods = [
+          { name: "Carrots", nutrientFocusesOn:"vitaminA", cost:"$0.77",benefits:"Supports eyesight and immune health"},
+          { name:"Sweet Potato",nutrientFocusesOn:"vitaminA", cost:"$0.97",benefits:"Rich in antioxidants and fiber"},
+          { name:"Spinach",nutrientFocusesOn:"vitaminA", cost:"$2.19",benefits:"Good source of iron and folate"},
+          { name: "Bananas", nutrientFocusesOn:"potassium", cost:"$0.50", benefits:"Maintains healthy blood pressure"},
+          { name: "Oranges", nutrientFocusesOn:"vitaminC", cost:"$1.00", benefits:"Boosts immune system and skin health"},
+          { name: "Broccoli", nutrientFocusesOn:"vitaminC", cost:"$1.99", benefits:"Rich in antioxidants and fiber"},
+          { name: "Lentils", nutrientFocusesOn:"fiber", cost:"$1.29", benefits:"Supports digestive health and regulates blood sugar"},
+          { name: "Oats", nutrientFocusesOn:"fiber", cost:"$3.49", benefits:"Helps lower cholesterol levels"},
+          { name: "Chicken Breast", nutrientFocusesOn:"protein", cost:"$3.99", benefits:"Essential for muscle building and repair"},
+          { name: "Eggs", nutrientFocusesOn:"protein", cost:"$2.50", benefits:"Affordable source of protein and nutrients"},
+          { name: "Beans", nutrientFocusesOn:"iron", cost:"$0.99", benefits:"Prevents anemia and fatigue"},
+          { name: "Tofu", nutrientFocusesOn:"iron", cost:"$2.79", benefits:"Plant-based source of iron and protein"},
+          { name: "Almonds", nutrientFocusesOn:"antioxidants", cost:"$6.99", benefits:"Protects cells from damage and reduces inflammation"},
+          { name: "Blueberries", nutrientFocusesOn:"antioxidants", cost:"$3.99", benefits:"High in antioxidants and supports brain health"},
+          { name: "Flaxseeds", nutrientFocusesOn:"omega3", cost:"$4.49", benefits:"Supports heart health and reduces inflammation"},
+          { name: "Salmon", nutrientFocusesOn:"omega3", cost:"$8.99", benefits:"Rich in omega-3 fatty acids and protein"},
+          { name: "Brown Rice", nutrientFocusesOn:"wholeGrains", cost:"$1.49", benefits:"Provides sustained energy and fiber"},
+          { name: "Quinoa", nutrientFocusesOn:"wholeGrains", cost:"$5.99", benefits:"Complete protein and rich in nutrients"},
+          { name: "Avocado", nutrientFocusesOn:"lowCost", cost:"$1.29", benefits:"Healthy fats and nutrients on a budget"},
+          { name: "Canned Tuna", nutrientFocusesOn:"lowCost", cost:"$0.89", benefits:"Affordable protein source"}
+        ];
+
+        function findFoods() {
+            const selectedNutrient = document.getElementById("nutrient").value;
+            const resultsSection = document.getElementById("results");
+            resultsSection.innerHTML = "";
+
+            const filteredFoods = foods.filter(food => food.nutrientFocusesOn === selectedNutrient || selectedNutrient === "lowCost" || selectedNutrient === "plantBased" || selectedNutrient === "wholeGrains" || selectedNutrient === "antioxidants" || selectedNutrient === "omega3");
+
+            if (filteredFoods.length === 0) {
+                resultsSection.innerHTML = "<p>No foods found for the selected option.</p>";
+                return;
+            }
+
+            filteredFoods.forEach(food => {
+                const foodItem = document.createElement("div");
+                foodItem.className = "food-item";
+                foodItem.innerHTML = `
+                    <h3>${food.name}</h3>
+                    <p>${food.benefits}</p>
+                    <p><span>Approximate Cost: ${food.cost}</span></p>
+                `;
+                resultsSection.appendChild(foodItem);
+            });
+        }
+    </script>
+</body>
+</html>
