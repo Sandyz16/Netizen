@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Document Generator</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1E1E1E;
+            --text-color: #E0E0E0;
+            --accent-color: #64FFDA;
+            --error-color: #CF6679;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--accent-color);
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 3rem;
+        }
+
+        .document-form {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.75rem;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #444;
+            border-radius: 6px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 6px;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45E0BC;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #generated-document {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 21cm;  /* A4 width */
+            height: 29.7cm;   /* A4 height */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12pt;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            box-sizing: border-box;
+        }
+
+        footer {
+            background-color: var(--card-bg);
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 1200px) {
+            main {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #generated-document {
+                height: auto;
+                min-height: 29.7cm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Legal Document Generator</h1>
+    </header>
+    <main>
+        <div class="document-form">
+            <div class="form-group">
+                <label for="document-type">Document Type:</label>
+                <select id="document-type">
+                    <option value="contract">Contract</option>
+                    <option value="rental-agreement">Rental Agreement</option>
+                    <option value="nda">Non-Disclosure Agreement</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="party1">Party 1 Name:</label>
+                <input type="text" id="party1" required>
+            </div>
+            <div class="form-group">
+                <label for="party2">Party 2 Name:</label>
+                <input type="text" id="party2" required>
+            </div>
+            <div class="form-group">
+                <label for="terms">Terms and Conditions:</label>
+                <textarea id="terms" required></textarea>
+            </div>
+            <button onclick="generateDocument()">Generate Document</button>
+        </div>
+        <div id="generated-document"></div>
+    </main>
+    <footer>
+        <p>&copy; 2023 Legal Document Generator. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function generateDocument() {
+            const documentType = document.getElementById('document-type').value;
+            const party1 = document.getElementById('party1').value;
+            const party2 = document.getElementById('party2').value;
+            const terms = document.getElementById('terms').value;
+
+            let documentText = '';
+            const currentDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            switch (documentType) {
+                case 'contract':
+                    documentText = `CONTRACT AGREEMENT
+
+This Contract Agreement (the "Agreement") is made and entered into on ${currentDate}, by and between:
+
+${party1} ("Party A")
+and
+${party2} ("Party B")
+
+WHEREAS, Party A and Party B (collectively, the "Parties") wish to enter into an agreement for their mutual benefit;
+
+NOW, THEREFORE, in consideration of the promises and covenants contained herein, the Parties agree as follows:
+
+1. TERMS AND CONDITIONS
+${terms}
+
+2. ENTIRE AGREEMENT
+This Agreement constitutes the entire understanding between the Parties with respect to the subject matter hereof and supersedes all prior agreements, understandings, and representations.
+
+3. GOVERNING LAW
+This Agreement shall be governed by and construed in accordance with the laws of [Jurisdiction], without regard to its conflict of law provisions.
+
+IN WITNESS WHEREOF, the Parties hereto have executed this Agreement as of the date first above written.
+
+________________________
+${party1}
+Date: ________________
+
+________________________
+${party2}
+Date: ________________`;
+                    break;
+                case 'rental-agreement':
+                    documentText = `RENTAL AGREEMENT
+
+This Rental Agreement (the "Agreement") is made and entered into on ${currentDate}, by and between:
+
+${party1} ("Landlord")
+and
+${party2} ("Tenant")
+
+WHEREAS, Landlord is the owner of certain real property and improvements located at [Property Address] (the "Property");
+
+AND WHEREAS, Landlord desires to lease the Property to Tenant upon the terms and conditions contained herein;
+
+NOW, THEREFORE, in consideration of the mutual covenants and agreements herein contained, the parties agree as follows:
+
+1. LEASE TERMS
+${terms}
+
+2. ENTIRE AGREEMENT
+This Agreement constitutes the entire agreement between Landlord and Tenant with respect to the lease of the Property, and supersedes all prior agreements, understandings, and representations.
+
+3. GOVERNING LAW
+This Agreement shall be governed by and construed in accordance with the laws of [Jurisdiction].
+
+IN WITNESS WHEREOF, the parties hereto have executed this Rental Agreement as of the date first above written.
+
+________________________
+${party1} (Landlord)
+Date: ________________
+
+________________________
+${party2} (Tenant)
+Date: ________________`;
+                    break;
+                case 'nda':
+                    documentText = `NON-DISCLOSURE AGREEMENT
+
+This Non-Disclosure Agreement (the "Agreement") is entered into on ${currentDate}, by and between:
+
+${party1} ("Disclosing Party")
+and
+${party2} ("Receiving Party")
+
+WHEREAS, Disclosing Party possesses certain confidential and proprietary information that it wishes to disclose to Receiving Party for a specific purpose;
+
+NOW, THEREFORE, in consideration of the mutual covenants and agreements contained herein, the parties agree as follows:
+
+1. CONFIDENTIALITY TERMS
+${terms}
+
+2. ENTIRE AGREEMENT
+This Agreement constitutes the entire understanding between the parties with respect to the subject matter hereof and supersedes all prior agreements, understandings, and representations.
+
+3. GOVERNING LAW
+This Agreement shall be governed by and construed in accordance with the laws of [Jurisdiction], without regard to its conflict of law provisions.
+
+IN WITNESS WHEREOF, the parties hereto have executed this Non-Disclosure Agreement as of the date first above written.
+
+________________________
+${party1} (Disclosing Party)
+Date: ________________
+
+________________________
+${party2} (Receiving Party)
+Date: ________________`;
+                    break;
+            }
+
+            document.getElementById('generated-document').textContent = documentText;
+        }
+    </script>
+</body>
+</html>
