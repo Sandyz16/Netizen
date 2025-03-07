@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crowdsourced News Validation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #FFC107;
+            --background-color: #121212;
+            --surface-color: #1E1E1E;
+            --text-color: #FFFFFF;
+            --text-secondary-color: #B0B0B0;
+            --error-color: #FF5252;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .submit-section, .news-list {
+            background-color: var(--surface-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: none;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-size: 16px;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .news-item {
+            background-color: var(--background-color);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .news-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .news-item p {
+            color: var(--text-secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .vote-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vote-button {
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .upvote {
+            background-color: var(--primary-color);
+        }
+
+        .downvote {
+            background-color: var(--error-color);
+        }
+
+        .vote-count {
+            font-weight: bold;
+        }
+
+        .credibility-score {
+            font-style: italic;
+            color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Crowdsourced News Validation</h1>
+            <p>Vote on the credibility of news sources</p>
+        </header>
+
+        <section class="submit-section">
+            <h2>Submit a News Article</h2>
+            <input type="text" id="articleTitle" placeholder="Article Title">
+            <input type="text" id="articleSource" placeholder="Source URL">
+            <textarea id="articleSummary" placeholder="Brief summary of the article..."></textarea>
+            <button onclick="submitArticle()">Submit Article</button>
+        </section>
+
+        <section class="news-list" id="newsList">
+            <!-- News items will be displayed here -->
+        </section>
+    </div>
+
+    <script>
+        let newsArticles = [];
+
+        function submitArticle() {
+            const title = document.getElementById('articleTitle').value;
+            const source = document.getElementById('articleSource').value;
+            const summary = document.getElementById('articleSummary').value;
+
+            if (title && source && summary) {
+                const newArticle = {
+                    id: Date.now(),
+                    title,
+                    source,
+                    summary,
+                    upvotes: 0,
+                    downvotes: 0
+                };
+
+                newsArticles.unshift(newArticle);
+                updateNewsList();
+                clearForm();
+            } else {
+                alert('Please fill in all fields');
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('articleTitle').value = '';
+            document.getElementById('articleSource').value = '';
+            document.getElementById('articleSummary').value = '';
+        }
+
+        function updateNewsList() {
+            const newsList = document.getElementById('newsList');
+            newsList.innerHTML = '';
+
+            newsArticles.forEach(article => {
+                const articleElement = document.createElement('div');
+                articleElement.className = 'news-item';
+                articleElement.innerHTML = `
+                    <h3>${article.title}</h3>
+                    <p><strong>Source:</strong> <a href="${article.source}" target="_blank">${article.source}</a></p>
+                    <p>${article.summary}</p>
+                    <div class="vote-section">
+                        <button class="vote-button upvote" onclick="vote(${article.id}, 'up')">👍 Upvote</button>
+                        <span class="vote-count">${article.upvotes} upvotes, ${article.downvotes} downvotes</span>
+                        <button class="vote-button downvote" onclick="vote(${article.id}, 'down')">👎 Downvote</button>
+                    </div>
+                    <p class="credibility-score">Credibility Score: ${calculateCredibility(article)}%</p>
+                `;
+                newsList.appendChild(articleElement);
+            });
+        }
+
+        function vote(articleId, voteType) {
+            const article = newsArticles.find(a => a.id === articleId);
+            if (article) {
+                if (voteType === 'up') {
+                    article.upvotes++;
+                } else {
+                    article.downvotes++;
+                }
+                updateNewsList();
+            }
+        }
+
+        function calculateCredibility(article) {
+            const totalVotes = article.upvotes + article.downvotes;
+            if (totalVotes === 0) return 50; // Neutral score if no votes
+            return Math.round((article.upvotes / totalVotes) * 100);
+        }
+
+        // Initialize with some sample articles
+        newsArticles = [
+            {id: 1, title: "New Environmental Policy Announced", source: "https://example.com/news1", summary: "Government introduces stricter regulations on carbon emissions.", upvotes: 15, downvotes: 3},
+            {id: 2, title: "Tech Giant Launches Revolutionary Product", source: "https://example.com/news2", summary: "Latest gadget promises to change the way we interact with technology.", upvotes: 8, downvotes: 7}
+        ];
+        updateNewsList();
+    </script>
+</body>
+</html>
