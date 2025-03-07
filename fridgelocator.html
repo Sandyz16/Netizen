@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Fridge Locator</title>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8BC34A;  /* Light Green */
+            --secondary-color: #FFEB3B; /* Yellow */
+            --background-color: #121212; /* Dark Gray */
+            --surface-color: #1E1E1E;   /* Slightly Lighter Dark Gray */
+            --text-color: #FFFFFF;       /* White */
+            --text-secondary-color: #B0B0B0; /* Light Gray */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        #map {
+            flex: 1;
+            border-radius: 8px; /* Added border-radius */
+            overflow: hidden;    /* Ensure markers don't overflow rounded corners */
+        }
+
+        .sidebar {
+            width: 300px;
+            padding: 20px;
+            background-color: var(--surface-color);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Darker shadow */
+            overflow-y: auto;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .fridge-list {
+            list-style-type: none;
+            padding: 0; /* Remove default padding */
+        }
+
+        .fridge-item {
+            background-color: var(--background-color);
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .fridge-item:hover {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+        }
+
+        .fridge-name {
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .fridge-address {
+            font-size: 0.9em;
+            color: var(--text-secondary-color);
+        }
+
+        /* Added for better visibility of map attributes */
+        .mapboxgl-ctrl-bottom-right,
+        .mapboxgl-ctrl-attrib {
+            color: var(--text-color); /* Ensure the text is readable */
+            background-color: rgba(0, 0, 0, 0.5);  /* Add a semi-transparent background for contrast */
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Community Fridges</h1>
+            <ul id="fridgeList" class="fridge-list"></ul>
+        </div>
+        <div id="map"></div>
+    </div>
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic2hlZmpvZSIsImEiOiJjbTd4ajNraW8wNnJxMmtzY3ZocWtmeDV4In0.b-sPpedih2b4pnr6OxJ9Qw'; // Replace with your actual token
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/dark-v10',  // Use a dark map style
+            center: [-74.006, 40.7128],
+            zoom: 12
+        });
+
+        const fridges = [
+            { name: "LES Community Fridge", location: [-73.983748, 40.715207], address: "466 Grand Street, New York, NY 10002" },
+            { name: "Bed-Stuy Fridge", location: [-73.953724, 40.687880], address: "375 Throop Ave, Brooklyn, NY 11221" },
+            { name: "Harlem Community Fridge", location: [-73.944517, 40.814448], address: "22 E 115th St, New York, NY 10029" }
+        ];
+
+        function addFridgeMarkers() {
+            fridges.forEach(fridge => {
+                new mapboxgl.Marker({ color: "#8BC34A" })  // Use a color that stands out
+                    .setLngLat(fridge.location)
+                    .setPopup(new mapboxgl.Popup().setHTML(`<h3>${fridge.name}</h3><p>${fridge.address}</p>`))
+                    .addTo(map);
+            });
+        }
+
+        function populateFridgeList() {
+            const fridgeList = document.getElementById('fridgeList');
+            fridges.forEach(fridge => {
+                const li = document.createElement('li');
+                li.className = 'fridge-item';
+                li.innerHTML = `
+                    <div class="fridge-name">${fridge.name}</div>
+                    <div class="fridge-address">${fridge.address}</div>
+                `;
+                li.addEventListener('click', () => {
+                    map.flyTo({ center: fridge.location, zoom: 15 });
+                });
+                fridgeList.appendChild(li);
+            });
+        }
+
+        map.on('load', () => {
+            addFridgeMarkers();
+            populateFridgeList();
+        });
+
+        // OpenRouteService API integration could be added here for routing functionality
+    </script>
+</body>
+</html>
