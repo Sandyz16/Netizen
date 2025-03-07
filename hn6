@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeRoute - Safety Services</title>
+    <link rel="stylesheet" href="saferoute.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="back-button">← Back to Safety Services</a>
+        </nav>
+        <h1>SafeRoute</h1>
+        <p>AI-powered navigation for secure travel routes</p>
+    </header>
+
+    <main>
+        <section class="service-description">
+            <h2>How SafeRoute Works</h2>
+            <p>SafeRoute uses advanced AI algorithms to analyze real-time data and historical patterns, providing you with the safest possible route to your destination.</p>
+        </section>
+
+        <section class="map-interface">
+            <div id="map" style="width: 100%; height: 400px;"></div>
+            
+            <div class="controls">
+                <input type="text" id="start" placeholder="Enter start location">
+                <input type="text" id="destination" placeholder="Enter destination">
+                <button id="find-route">Find Safe Route</button>
+            </div>
+        </section>
+
+        <section id="route-result">
+            <!-- SafeRoute results will appear here -->
+        </section>
+
+        <section class="features">
+            <h2>Key Features</h2>
+            <ul>
+                <li>Real-time crime data analysis</li>
+                <li>Alternative route suggestions</li>
+                <li>Night safety mode</li>
+                <li>Integration with emergency services</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Safety Services. All rights reserved.</p>
+    </footer>
+
+    <script src="saferoute.js"></script>
+</body>
+</html>
