@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodRescueHub</title>
+    <link rel="stylesheet" href="foodrescuehub.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">FoodRescueHub</div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#donate">Donate</a></li>
+                <li><a href="#find-food">Find Food</a></li>
+                <li><a href="#impact">Impact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home">
+            <h1>Connecting Surplus Food to Those in Need</h1>
+            <p>Join us in reducing food waste and fighting hunger</p>
+            <div class="cta-buttons">
+                <button class="cta-button donate">Donate Food</button>
+                <button class="cta-button find">Find Food</button>
+            </div>
+        </section>
+
+        <section id="about">
+            <h2>How It Works</h2>
+            <div class="process-container">
+                <div class="process-step">
+                    <div class="icon restaurant-icon">🍽️</div>
+                    <h3>Restaurants</h3>
+                    <p>Donate surplus food</p>
+                </div>
+                <div class="process-step">
+                    <div class="icon delivery-icon">🚚</div>
+                    <h3>FoodRescueHub</h3>
+                    <p>Connects and coordinates</p>
+                </div>
+                <div class="process-step">
+                    <div class="icon ngo-icon">🏠</div>
+                    <h3>NGOs & Shelters</h3>
+                    <p>Receive and distribute food</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="donate">
+            <h2>Donate Food</h2>
+            <div class="form-container">
+                <form id="donation-form">
+                    <div class="form-group">
+                        <label for="restaurant-name">Restaurant/Donor Name</label>
+                        <input type="text" id="restaurant-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="food-items">Food Items Available</label>
+                        <textarea id="food-items" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="pickup-time">Pickup Time</label>
+                        <input type="datetime-local" id="pickup-time" required>
+                    </div>
+                    <button type="submit">Submit Donation</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="find-food">
+            <h2>Find Available Food</h2>
+            <div class="food-map">
+                <div id="map"></div>
+                <div class="food-list">
+                    <h3>Available Food Donations</h3>
+                    <ul id="food-donations">
+                        <!-- Food donations will be dynamically added here -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact">
+            <h2>Our Impact</h2>
+            <div class="impact-stats">
+                <div class="stat">
+                    <span id="meals-served">0</span>
+                    <p>Meals Served</p>
+                </div>
+                <div class="stat">
+                    <span id="restaurants-partnered">0</span>
+                    <p>Restaurant Partners</p>
+                </div>
+                <div class="stat">
+                    <span id="ngo-partners">0</span>
+                    <p>NGO Partners</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 FoodRescueHub. All rights reserved.</p>
+    </footer>
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js'></script>
+    <!-- Add OpenRouteService JS client -->
+    <script src="https://unpkg.com/openrouteservice-js"></script>
+    <script src="foodrescuehub.js"></script>
+</body>
+</html>
