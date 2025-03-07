@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Bono Lawyer Connect</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1E1E1E;
+            --text-color: #E0E0E0;
+            --accent-color: #BB86FC;
+            --error-color: #CF6679;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--accent-color);
+            margin: 0;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        #search-input::placeholder {
+            color: #888;
+        }
+
+        .lawyer-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .lawyer-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .lawyer-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .lawyer-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .lawyer-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .lawyer-specialty {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        .connect-btn {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .connect-btn:hover {
+            background-color: #9965f4;
+        }
+
+        footer {
+            background-color: var(--card-bg);
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Pro Bono Lawyer Connect</h1>
+    </header>
+    <main>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search for lawyers by name or specialty...">
+        </div>
+        <div class="lawyer-list" id="lawyer-list">
+            <!-- Lawyer cards will be dynamically added here -->
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2023 Pro Bono Lawyer Connect. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const lawyers = [
+            { name: "Jane Doe", specialty: "Family Law", avatar: "https://randomuser.me/api/portraits/women/1.jpg" },
+            { name: "John Smith", specialty: "Criminal Defense", avatar: "https://randomuser.me/api/portraits/men/1.jpg" },
+            { name: "Emily Johnson", specialty: "Immigration Law", avatar: "https://randomuser.me/api/portraits/women/2.jpg" },
+            { name: "Michael Brown", specialty: "Civil Rights", avatar: "https://randomuser.me/api/portraits/men/2.jpg" },
+            { name: "Sarah Wilson", specialty: "Environmental Law", avatar: "https://randomuser.me/api/portraits/women/3.jpg" },
+            { name: "David Lee", specialty: "Intellectual Property", avatar: "https://randomuser.me/api/portraits/men/3.jpg" }
+        ];
+
+        const lawyerList = document.getElementById('lawyer-list');
+        const searchInput = document.getElementById('search-input');
+
+        function createLawyerCard(lawyer) {
+            const card = document.createElement('div');
+            card.className = 'lawyer-card';
+            card.innerHTML = `
+                <img src="${lawyer.avatar}" alt="${lawyer.name}" class="lawyer-avatar">
+                <h2 class="lawyer-name">${lawyer.name}</h2>
+                <p class="lawyer-specialty">${lawyer.specialty}</p>
+                <button class="connect-btn">Connect</button>
+            `;
+            return card;
+        }
+
+        function displayLawyers(lawyersToDisplay) {
+            lawyerList.innerHTML = '';
+            lawyersToDisplay.forEach(lawyer => {
+                const card = createLawyerCard(lawyer);
+                lawyerList.appendChild(card);
+            });
+        }
+
+        function filterLawyers(searchTerm) {
+            return lawyers.filter(lawyer => 
+                lawyer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                lawyer.specialty.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value;
+            const filteredLawyers = filterLawyers(searchTerm);
+            displayLawyers(filteredLawyers);
+        });
+
+        // Initial display of all lawyers
+        displayLawyers(lawyers);
+    </script>
+</body>
+</html>
