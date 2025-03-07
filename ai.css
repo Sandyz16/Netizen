@@ -1,0 +1,102 @@
+/* --- Global Styles --- */
+body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* --- Chat Container --- */
+.chat-container {
+    background: #1e1e1e;
+    padding: 25px;
+    width: 50%;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.2);
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* --- Title & Subtext --- */
+h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+    color: #bb86fc;
+}
+
+.subtext {
+    font-size: 14px;
+    color: #b0b0b0;
+    margin-bottom: 20px;
+}
+
+/* --- Chat Box --- */
+.chat-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+textarea, input {
+    width: 90%;
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    background: #2a2a2a;
+    color: white;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+textarea:focus, input:focus {
+    outline: none;
+    box-shadow: 0px 0px 10px rgba(187, 134, 252, 0.7);
+}
+
+/* --- Send Button --- */
+button {
+    background: #bb86fc;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+}
+
+button:hover {
+    background: #9a67ea;
+    transform: scale(1.05);
+}
+
+/* --- Response Container --- */
+#response-container {
+    margin-top: 20px;
+    background: #333;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 8px rgba(255, 255, 255, 0.2);
+    min-height: 50px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#response-container.show {
+    opacity: 1;
+}
+
+#response-text {
+    font-size: 18px;
+    color: #fff;
+}
+
+/* --- Animations --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
