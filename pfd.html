@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Political Funding Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #FFC107;
+            --background-color: #121212;
+            --surface-color: #1E1E1E;
+            --text-color: #FFFFFF;
+            --text-secondary-color: #B0B0B0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .search-section, .results-section {
+            background-color: var(--surface-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: none;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .donation-item {
+            background-color: var(--background-color);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .donation-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .donation-item p {
+            color: var(--text-secondary-color);
+            margin-bottom: 5px;
+        }
+
+        .blockchain-info {
+            font-size: 0.8em;
+            color: var(--secondary-color);
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Political Funding Tracker</h1>
+            <p>Blockchain-backed transparency on political donations</p>
+        </header>
+
+        <section class="search-section">
+            <input type="text" id="politicianSearch" placeholder="Search for a politician...">
+            <select id="timeFrame">
+                <option value="all">All Time</option>
+                <option value="year">Past Year</option>
+                <option value="month">Past Month</option>
+                <option value="week">Past Week</option>
+            </select>
+            <button onclick="searchDonations()">Track Donations</button>
+        </section>
+
+        <section class="results-section" id="results">
+            <!-- Donation results will be displayed here -->
+        </section>
+    </div>
+
+    <script>
+        function searchDonations() {
+            const politician = document.getElementById('politicianSearch').value;
+            const timeFrame = document.getElementById('timeFrame').value;
+            const resultsSection = document.getElementById('results');
+
+            // Clear previous results
+            resultsSection.innerHTML = '<p>Searching for donations...</p>';
+
+            // Simulate API call to blockchain
+            setTimeout(() => {
+                const donations = simulateBlockchainData(politician, timeFrame);
+                displayDonations(donations);
+            }, 1500);
+        }
+
+        function simulateBlockchainData(politician, timeFrame) {
+            // This function simulates fetching data from a blockchain
+            // In a real application, this would interact with an actual blockchain
+            const donations = [
+                { donor: "Tech Corp Inc.", amount: 50000, date: "2023-05-15", txHash: "0x123...abc" },
+                { donor: "Green Energy LLC", amount: 25000, date: "2023-04-22", txHash: "0x456...def" },
+                { donor: "John Doe", amount: 1000, date: "2023-05-01", txHash: "0x789...ghi" }
+            ];
+            return donations;
+        }
+
+        function displayDonations(donations) {
+            const resultsSection = document.getElementById('results');
+            resultsSection.innerHTML = '';
+
+            donations.forEach(donation => {
+                const donationElement = document.createElement('div');
+                donationElement.className = 'donation-item';
+                donationElement.innerHTML = `
+                    <h3>${donation.donor}</h3>
+                    <p>Amount: $${donation.amount.toLocaleString()}</p>
+                    <p>Date: ${donation.date}</p>
+                    <div class="blockchain-info">
+                        Transaction Hash: ${donation.txHash}
+                    </div>
+                `;
+                resultsSection.appendChild(donationElement);
+            });
+        }
+    </script>
+</body>
+</html>
